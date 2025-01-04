@@ -6,5 +6,5 @@ target_create(
     CXX_STANDARD           20
     INCLUDE_DIRS
         engine/domain
-        emgine/wavefront
+        engine/wavefront
 )
