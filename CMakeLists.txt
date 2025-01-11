@@ -8,8 +8,8 @@ set(CMAKE_MODULE_PATH ${REPO_ROOT}/cmake/modules ${REPO_ROOT}/cmake/scripts)
 include(target)
 
 set(REQUIRED_MODULES
-    engine
     main
+    engine
 )
 
 # dependency resolving could be done in plain cmake without python interop,
@@ -23,11 +23,13 @@ execute_process(
 )
 
 if(${RESOLVER_STATUS} STREQUAL 0)
-    message(${SORTED_MODULES})
+    foreach(module ${SORTED_MODULES})
+        include(${module})
+    endforeach()
 else()
-    message(WARNING "Error from dependency resolver: ${RESOLVER_ERROR_OUT}\nTrying to generate with original dependencies order")
-endif()
+    message(WARNING "Error from dependency resolver:\n ${RESOLVER_ERROR_OUT}\nTrying to generate with original dependencies list")
 
-foreach(module ${REQUIRED_MODULES})
-    include(${module})
-endforeach()
+    foreach(module ${REQUIRED_MODULES})
+        include(${module})
+    endforeach()
+endif()
