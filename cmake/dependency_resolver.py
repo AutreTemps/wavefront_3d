@@ -14,7 +14,11 @@ for module in modules:
     
     with open(os.path.normpath(module_path), 'r') as cmake_module:
         data = cmake_module.read()
-        target_internals = re.findall(r'target_create\((.*?)\)', data, re.S)[0]
+        target_internals_list = re.findall(r'target_create\((.*?)\)', data, re.S)
+        if len(target_internals_list) == 0:
+            print('Requested module does not contain target_create()', file=sys.stderr)
+            sys.exit(1)
+        target_internals = target_internals_list[0]
 
         name = re.findall(r'NAME\s+?\b(.+?)\b', target_internals)[0]
         if name == name.upper():

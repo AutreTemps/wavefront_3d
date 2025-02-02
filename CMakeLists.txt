@@ -7,10 +7,12 @@ set(CMAKE_MODULE_PATH ${REPO_ROOT}/cmake/modules ${REPO_ROOT}/cmake/scripts)
 
 include(target)
 
-set(REQUIRED_MODULES
-    main
-    engine
-)
+file(GLOB ALL_MODULES "${REPO_ROOT}/cmake/modules/*.cmake")
+list(TRANSFORM ALL_MODULES REPLACE "\.cmake$" "")
+list(TRANSFORM ALL_MODULES REPLACE "^(.*)\/" "")
+
+# this may be modified in future
+set(REQUIRED_MODULES ${ALL_MODULES})
 
 # dependency resolving could be done in plain cmake without python interop,
 # but cmake syntax is a pure abomination, so I don't want to
